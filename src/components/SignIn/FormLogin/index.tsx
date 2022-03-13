@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "../../FormElements/Button";
+import { Input } from "../../FormElements/Input";
 import { Container } from "./styles";
 
 export function FormLogin() {
@@ -17,20 +19,21 @@ export function FormLogin() {
     <Container>
       <h1>Entrar no devshare</h1>
       <form onSubmit={handleSignIn}>
-        <input 
-          type="email" 
-          name="email" 
+        <Input
+          type="email"
+          name="email"
+          placeholder="E-mail" 
           onChange={data => setEmail(data.target.value)}
-          placeholder="E-mail"
         />
-        <input 
-          type="password" 
-          name="password" 
-          onChange={data => setPassword(data.target.value)}
+
+        <Input 
+          type="password"
+          name="password"
           placeholder="Senha"
+          onChange={data => setPassword(data.target.value)}
         />
         
-        <button type="submit">Entrar</button>
+        <Button>Entrar</Button>
       </form>
       <p>Ainda não tem uma conta? <Link href="/register"><a>Cadastra-se</a></Link></p>
     </Container>
