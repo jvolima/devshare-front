@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const FormButton = styled.button`
   margin-top: 2rem;
   border-radius: 2.5rem;
-  padding: 1rem 1rem;
+  padding: 1.5rem 1rem;
   background: var(--blue-300);
   border: 0;
   color: var(--white);

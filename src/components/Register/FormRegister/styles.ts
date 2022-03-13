@@ -12,4 +12,15 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
   }
+
+  p {
+    margin-top: 4rem;
+    font-size: 1.125rem;
+    color: var(--gray-300);
+    
+    a {
+      color: var(--yellow-500);
+      text-decoration: none;
+    }
+  }
 `

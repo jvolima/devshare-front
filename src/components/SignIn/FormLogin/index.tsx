@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "../../FormElements/Button";
 import { Input } from "../../FormElements/Input";
 import { Container } from "./styles";
@@ -8,7 +8,9 @@ export function FormLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleSignIn(): void {
+  function handleSignIn(event: FormEvent): void {
+    event.preventDefault();
+
     console.log({
       email,
       password
@@ -31,6 +33,7 @@ export function FormLogin() {
           name="password"
           placeholder="Senha"
           onChange={data => setPassword(data.target.value)}
+          autoComplete="on"
         />
         
         <Button>Entrar</Button>

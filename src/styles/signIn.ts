@@ -5,6 +5,7 @@ export const Container = styled.main`
   width: 100%;
   height: 100vh;
   margin: 0 auto;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
