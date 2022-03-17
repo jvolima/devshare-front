@@ -9,6 +9,8 @@ import { Button } from "../../FormElements/Button";
 import { Input } from "../../FormElements/Input";
 import { Container } from "./styles";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { setInterval } from "timers";
+import Router from "next/router";
 
 interface CreateUserFormData {
   name: string;
@@ -17,9 +19,9 @@ interface CreateUserFormData {
 }
 
 const createUserFormSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  email: yup.string().required('Email is required').email('Invalid email'),
-  password: yup.string().required('Password is required').min(6, 'At least 6 caracters')
+  name: yup.string().required('Nome é obrigatório'),
+  email: yup.string().required('Email é obrigatório').email('Email inválido'),
+  password: yup.string().required('Senha é obrigatória').min(6, 'Pelo menos 6 caracteres para a senha')
 });
 
 export const FormRegister = () => {
@@ -27,19 +29,25 @@ export const FormRegister = () => {
     resolver: yupResolver(createUserFormSchema)
   })
 
-  const handleRegister: SubmitHandler<CreateUserFormData> = async (data, event: FormEvent) => {
-    console.log(data)
-    event.preventDefault();
-
+  const onSubmit: SubmitHandler<CreateUserFormData> = async (data) => {
     try {
-      const response = await api.post("/users", {
-        data
+      await api.post("/users", {
+        name: data.name,
+        email: data.email,
+        password: data.password
       });
 
-      console.log(response)
+      toast.success("Usuário cadastrado com sucesso!");
+      setTimeout(() => {
+        Router.push("/")
+      }, 2000)
     } catch (err) {
-      toast.error("An user with this email already exists!");
+      toast.error("Já existe um usuário com esse e-mail!");
     }
+  }
+
+  const onError = () => {
+    console.log('form error')
   }
 
   return (
@@ -51,17 +59,19 @@ export const FormRegister = () => {
         pauseOnHover={false} 
       />
       <h1>Criar sua conta no devshare</h1>
-      <form onSubmit={handleSubmit(handleRegister)}>
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
         <Input 
           type="text" 
           name="name" 
           placeholder="Nome"
+          error={formState.errors.name}
           {...register('name')}
         />
         <Input 
           type="email" 
           name="email" 
           placeholder="E-mail"
+          error={formState.errors.email}
           {...register('email')}
         />
         <Input 
@@ -69,6 +79,7 @@ export const FormRegister = () => {
           name="password" 
           placeholder="Senha"
           autoComplete="on"
+          error={formState.errors.password}
           {...register('password')}
         />
 
