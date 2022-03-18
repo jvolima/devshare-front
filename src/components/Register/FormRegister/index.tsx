@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import 'react-toastify/dist/ReactToastify.min.css';
 import { FormEvent, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { api } from "../../../services/api";
+import { api } from "../../../services/apiClient";
 import { Button } from "../../FormElements/Button";
 import { Input } from "../../FormElements/Input";
 import { Container } from "./styles";
