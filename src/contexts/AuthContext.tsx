@@ -76,32 +76,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   async function signIn({ email, password }: SignInCredentials) {
-    try {
-      const response = await api.post("users/session", {
-        email,
-        password
-      });
+    const response = await api.post("users/session", {
+      email,
+      password
+    });
 
-      const { token, refresh_token, user } = response.data as AuthResponse;
+    const { token, refresh_token, user } = response.data as AuthResponse;
 
-      setCookie(undefined, 'devshare.token', token, {
-        maxAge: 60 * 60 * 24 * 30, //30 dias
-        path: '/'
-      });
+    setCookie(undefined, 'devshare.token', token, {
+      maxAge: 60 * 60 * 24 * 30, //30 dias
+      path: '/'
+    });
 
-      setCookie(undefined, 'devshare.refresh_token', refresh_token, {
-        maxAge: 60 * 60 * 24 * 30, //30 dias
-        path: '/'
-      });
+    setCookie(undefined, 'devshare.refresh_token', refresh_token, {
+      maxAge: 60 * 60 * 24 * 30, //30 dias
+      path: '/'
+    });
 
-      setUser(user);
+    setUser(user);
 
-      api.defaults.headers['Authorization'] = `Bearer ${token}`;
+    api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
-      Router.push('/home');
-    } catch(err) {
-      console.log(err);
-    }
+    Router.push('/home');
   }
 
   return (

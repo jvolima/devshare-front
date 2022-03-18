@@ -79,6 +79,8 @@ export function setupApiClient(ctx = undefined) {
           return Promise.reject(new AuthTokenError());
         }
       }
+    } else {
+      throw new Error('error')
     }
   })
 

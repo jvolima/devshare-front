@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FormEvent, useContext, useState } from "react";
-import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
+import { toast, ToastContainer } from "react-toastify";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { Button } from "../../FormElements/Button";
 import { Input } from "../../FormElements/Input";
@@ -20,11 +21,21 @@ export function FormLogin() {
       password
     };
 
-    await signIn(credentials);
+    try { 
+      await signIn(credentials);
+    } catch (err) {
+      toast.error("Email ou senha incorretos!")
+    }
   }
 
   return (
     <Container>
+      <ToastContainer 
+        theme="colored" 
+        toastClassName="errorAlert"
+        autoClose={3000} 
+        pauseOnHover={false} 
+      />
       <h1>Entrar no devshare</h1>
       <form onSubmit={handleSignIn}>
         <Input

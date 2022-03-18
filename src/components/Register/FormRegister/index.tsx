@@ -46,10 +46,6 @@ export const FormRegister = () => {
     }
   }
 
-  const onError = () => {
-    console.log('form error')
-  }
-
   return (
     <Container>
       <ToastContainer 
@@ -59,7 +55,7 @@ export const FormRegister = () => {
         pauseOnHover={false} 
       />
       <h1>Criar sua conta no devshare</h1>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input 
           type="text" 
           name="name" 
