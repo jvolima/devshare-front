@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../contexts/AuthContext";
 import { Button } from "../../FormElements/Button";
 import { Input } from "../../FormElements/Input";
 import { Container } from "./styles";
@@ -7,14 +9,18 @@ import { Container } from "./styles";
 export function FormLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  function handleSignIn(event: FormEvent): void {
+  
+  const { signIn } = useContext(AuthContext);
+ 
+  async function handleSignIn(event: FormEvent) {
     event.preventDefault();
 
-    console.log({
+    const credentials = {
       email,
       password
-    })
+    };
+
+    await signIn(credentials);
   }
 
   return (
