@@ -37,7 +37,7 @@ export function CreatePost() {
         </div>
         <div className="containerButton">
           <h3>Interaja com outros devs!</h3>
-          <button type="submit">Compartilhe</button>
+          <button type="submit">Compartilhar</button>
         </div>
       </form>
     </Container>
