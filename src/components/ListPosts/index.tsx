@@ -19,19 +19,21 @@ interface ListPostsProps {
 
 export function ListPosts({ posts }: ListPostsProps) {  
   function compareTime(date: Date) {
-    if((new Date().getDay() - new Date(date).getDay()) <= 0) {
-      if((new Date().getHours() - new Date(date).getHours()) <= 0) {
-        if((new Date().getMinutes() - new Date(date).getMinutes()) <= 0) {
-          if((new Date().getSeconds() - new Date(date).getSeconds()) <= 0) {
+    const dateInCorrectedFormat = new Date(date);
+    
+    if((new Date().getDay() - dateInCorrectedFormat.getDay()) <= 0) {
+      if((new Date().getHours() - dateInCorrectedFormat.getHours()) <= 0) {
+        if((new Date().getMinutes() - dateInCorrectedFormat.getMinutes()) <= 0) {
+          if((new Date().getSeconds() - dateInCorrectedFormat.getSeconds()) <= 0) {
             return 'Publicado agora'
           } else {
-            return `${new Date().getSeconds() - new Date(date).getSeconds()} segundos atrás` 
+            return `${new Date().getSeconds() - dateInCorrectedFormat.getSeconds()} segundos atrás` 
           }
         } else {
-          return `${new Date().getMinutes() - new Date(date).getMinutes()} minutos atrás` 
+          return `${new Date().getMinutes() - dateInCorrectedFormat.getMinutes()} minutos atrás` 
         }
       } else {
-        return `${new Date().getHours() - new Date(date).getHours()} horas atrás`
+        return `${new Date().getHours() - dateInCorrectedFormat.getHours()} horas atrás`
       }
     } else {
       return new Intl.DateTimeFormat("pt-BR", {
