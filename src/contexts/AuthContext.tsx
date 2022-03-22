@@ -5,6 +5,7 @@ import { api } from "../services/apiClient";
 
 type User = {
   name: string;
+  bio: string | undefined | null;
   email: string;
 }
 
@@ -67,8 +68,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     
     if(token) {
       api.get("users/me").then(response => {
-        const { email, name } = response.data;
-        setUser({ email, name });
+        const { email, name, bio } = response.data;
+        setUser({ email, name, bio });
       }).catch((err) => {
         signOut();
       })

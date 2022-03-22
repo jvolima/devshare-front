@@ -10,7 +10,7 @@ export function Header() {
           <Link href="/home"><a>Home</a></Link>
         </li>
         <li>
-          <Link href="/perfil"><a>Meu perfil</a></Link>
+          <Link href="/profile"><a>Meu perfil</a></Link>
         </li>
       </ul>
     </Container>
