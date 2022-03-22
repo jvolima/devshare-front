@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { api } from "../../services/apiClient";
+import { compareTime } from "../../utils/compareTime";
 import { Container } from "./styles";
 
 type Post = {
@@ -13,47 +14,59 @@ type Post = {
   updated_at: Date;
 }
 
-interface ListPostsProps {
-  posts: Post[];
+type FormatedPost = {
+  id: string;
+  content: string;
+  user: {
+    name: string;
+  };
+  created_at: string;
 }
 
-export function ListPosts({ posts }: ListPostsProps) {  
-  function compareTime(date: Date) {
-    const dateInCorrectedFormat = new Date(date);
-    
-    if((new Date().getDay() - dateInCorrectedFormat.getDay()) <= 0) {
-      if((new Date().getHours() - dateInCorrectedFormat.getHours()) <= 0) {
-        if((new Date().getMinutes() - dateInCorrectedFormat.getMinutes()) <= 0) {
-          if((new Date().getSeconds() - dateInCorrectedFormat.getSeconds()) <= 0) {
-            return 'Publicado agora'
-          } else {
-            return `${new Date().getSeconds() - dateInCorrectedFormat.getSeconds()} segundos atrás` 
-          }
-        } else {
-          return `${new Date().getMinutes() - dateInCorrectedFormat.getMinutes()} minutos atrás` 
-        }
-      } else {
-        return `${new Date().getHours() - dateInCorrectedFormat.getHours()} horas atrás`
-      }
-    } else {
-      return new Intl.DateTimeFormat("pt-BR", {
-        day: "2-digit",
-        month: "short",
-      }).format(new Date(date))
-    }
-  } 
+const postsQueue: Post[] = [];
 
-  const formatedPosts = posts.map(post => {
-    compareTime(post.created_at)
-    return {
-      id: post.id,
-      content: post.content,
-      user: {
-        name: post.user.name
-      },
-      created_at: compareTime(post.created_at)
-    }
-  })
+const socket = io('http://localhost:3333')
+
+socket.on('new_post', (newPost: Post) => {
+  postsQueue.push(newPost);
+})
+
+export function ListPosts() {  
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [formatedPosts, setFormatedPosts] = useState<FormatedPost[]>([]);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  useEffect(() => {
+    setInterval(() => {
+      if (postsQueue.length > 0) {
+        getPosts()
+        postsQueue.splice(0, postsQueue.length)
+      }
+    }, 1000)
+  }, [])
+
+  useEffect(() => {
+    const formated = posts.map(post => {
+      return {
+        id: post.id,
+        content: post.content,
+        user: {
+          name: post.user.name
+        },
+        created_at: compareTime(post.created_at)
+      }
+    })
+
+    setFormatedPosts(formated);
+  }, [posts]);
+
+  async function getPosts() {
+    const response = await api.get('posts');
+    setPosts(response.data);
+  }
 
   return (
     <Container>
